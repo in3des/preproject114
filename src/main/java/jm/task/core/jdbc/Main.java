@@ -1,5 +1,7 @@
 package jm.task.core.jdbc;
 import jm.task.core.jdbc.model.User;
+import jm.task.core.jdbc.service.UserService;
+import jm.task.core.jdbc.service.UserServiceImpl;
 import jm.task.core.jdbc.util.Util;
 
 import java.sql.PreparedStatement;
@@ -7,114 +9,32 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Main {
-//    private static final String INSERT_NEW = "INSERT INTO users VALUES (?,?,?,?)";
-//    private static final String INSERT_NEW_AUTO_ID = "INSERT INTO users(name, lastName, age) VALUES('Bruno','Martini',43)";
-    private static String tableName;
-    private static Long idToDo = 12L;
-
-    private static final String INSERT_NEW = "INSERT INTO $tableName (name, lastName, age) VALUES(?,?,?)";
-
-//    private static final String GET_ALL = "SELECT * FROM " + tableName;
-    private static final String GET_ALL = "SELECT * FROM $tableName";
-    private static final String GET_BY_ID = "SELECT * FROM $tableName WHERE id=?";
-
-    private static final String UPDATE_BY_ID = "UPDATE $tableName SET name='John', lastName='Connor', age=18 WHERE id=?";
-
-    private static final String DELETE_ALL = "DELETE from $tableName";
-    private static final String DELETE_BY_ID = "DELETE from $tableName WHERE id=?";
-
-
-//    private static final String DROP = "DROP TABLE ?";
-    private static final String DROP = "DROP TABLE $tableName";
-//    private static final String DROP = "DROP TABLE " + tableName;
-
-    private static final String CREATE = "CREATE TABLE $tableName (" +
-                                        "`id` bigint NOT NULL AUTO_INCREMENT," +
-                                        "`name` varchar(45) NOT NULL," +
-                                        "`lastName` varchar(45) NOT NULL," +
-                                        "`age` tinyint DEFAULT NULL," +
-                                        "PRIMARY KEY (`id`)," +
-                                        "UNIQUE KEY `id_UNIQUE` (`id`)" +
-                                        ") ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb3";
-
 
     public static void main(String[] args) {
         // реализуйте алгоритм здесь
-        List<User> userList = new ArrayList<>();
-        Util con1 = new Util();
-        con1.setTableName("users");
-//        tableName = con1.getTableName();
 
-//        String tableName = con1.getTableName();
+        UserService usrService1 = new UserServiceImpl();
 
-        try {
-            Statement statement = con1.getConnection().createStatement();
+        usrService1.createUsersTable();
 
-//            statement.execute(DELETE_BY_ID);
+        usrService1.saveUser("Bob", "Ferguson", (byte) 34);
+        usrService1.saveUser("John", "Connor", (byte) 18);
+        usrService1.saveUser("John", "Snow", (byte) 25);
+        usrService1.saveUser("Phil", "Dunphy", (byte) 52);
 
-//            statement.execute(INSERT_NEW_AUTO_ID);
-//            statement.executeUpdate(UPDATE_BY_ID);
+        usrService1.getAllUsers();
 
-            //        statement.execute("DELETE from users");
-//        statement.execute("DELETE from users WHERE id=5");
+        usrService1.removeUserById(3);
 
-//            PreparedStatement preparedStatement = con1.getConnection().prepareStatement(DELETE_BY_ID);
-//            preparedStatement.setLong(1, 3);
+        usrService1.cleanUsersTable();
 
-//            PreparedStatement preparedStatement = con1.getConnection().prepareStatement(INSERT_NEW);
-//            preparedStatement.setLong(1,11);
-//            preparedStatement.setString(1, "Bill");
-//            preparedStatement.setString(2, "Gates");
-//            preparedStatement.setByte(3, (byte) 65);
-
-
-//            String query1 = CREATE.replace("$tableName", con1.getTableName());
-//            String query1 = DROP.replace("$tableName", con1.getTableName());
-//            String query1 = GET_ALL.replace("$tableName", con1.getTableName());
-//            stmt =conn.prepareStatement(query);
-
-//            PreparedStatement preparedStatement = con1.getConnection().prepareStatement(query1);
-//            preparedStatement.setString(1, con1.getTableName());
-
-//            PreparedStatement preparedStatement = con1.getConnection().prepareStatement("DROP TABLE users22");
-
-//            PreparedStatement preparedStatement = con1.getConnection().prepareStatement(CREATE);
-
-//            PreparedStatement preparedStatement = con1.getConnection().prepareStatement(DELETE_BY_ID);
-
-//            preparedStatement.execute();
-//            preparedStatement.executeUpdate();
-
-//            ResultSet result1 = preparedStatement.executeQuery(GET_ALL);
-//            ResultSet result1 = statement.executeQuery("SELECT * FROM users WHERE id=9");
-//            ResultSet result1 = statement.executeQuery("SELECT * FROM users");
-
-            String query2 = GET_ALL.replace("$tableName", con1.getTableName());
-            ResultSet result1 = statement.executeQuery(query2);
-
-
-            while (result1.next()) {
-                User user = new User();
-                user.setId(result1.getLong("id"));
-                user.setName(result1.getString("name"));
-                user.setLastName(result1.getString("lastName"));
-                user.setAge(result1.getByte("age"));
-
-                userList.add(user);
-
-//                System.out.println(user);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println(userList.toString());
+        usrService1.dropUsersTable();
 
     }
-
 
 }

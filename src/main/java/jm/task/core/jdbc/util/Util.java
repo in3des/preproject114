@@ -31,9 +31,9 @@ public Util() {
         return connection;
     }
 
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
+//    public void setConnection(Connection connection) {
+//        this.connection = connection;
+//    }
 
     public String getTableName() {
         return tableName;
