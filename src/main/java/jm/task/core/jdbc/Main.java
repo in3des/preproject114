@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 //    private static final String INSERT_NEW = "INSERT INTO users VALUES (?,?,?,?)";
@@ -38,10 +40,12 @@ public class Main {
                                         "UNIQUE KEY `id_UNIQUE` (`id`)" +
                                         ") ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb3";
 
+
     public static void main(String[] args) {
         // реализуйте алгоритм здесь
+        List<User> userList = new ArrayList<>();
         Util con1 = new Util();
-        con1.setTableName("users44");
+        con1.setTableName("users");
 //        tableName = con1.getTableName();
 
 //        String tableName = con1.getTableName();
@@ -67,12 +71,12 @@ public class Main {
 //            preparedStatement.setByte(3, (byte) 65);
 
 
-            String query1 = CREATE.replace("$tableName", con1.getTableName());
+//            String query1 = CREATE.replace("$tableName", con1.getTableName());
 //            String query1 = DROP.replace("$tableName", con1.getTableName());
-//            String query = GET_ALL.replace("$tableName", con1.getTableName());
+//            String query1 = GET_ALL.replace("$tableName", con1.getTableName());
 //            stmt =conn.prepareStatement(query);
 
-            PreparedStatement preparedStatement = con1.getConnection().prepareStatement(query1);
+//            PreparedStatement preparedStatement = con1.getConnection().prepareStatement(query1);
 //            preparedStatement.setString(1, con1.getTableName());
 
 //            PreparedStatement preparedStatement = con1.getConnection().prepareStatement("DROP TABLE users22");
@@ -82,7 +86,7 @@ public class Main {
 //            PreparedStatement preparedStatement = con1.getConnection().prepareStatement(DELETE_BY_ID);
 
 //            preparedStatement.execute();
-            preparedStatement.executeUpdate();
+//            preparedStatement.executeUpdate();
 
 //            ResultSet result1 = preparedStatement.executeQuery(GET_ALL);
 //            ResultSet result1 = statement.executeQuery("SELECT * FROM users WHERE id=9");
@@ -91,6 +95,7 @@ public class Main {
             String query2 = GET_ALL.replace("$tableName", con1.getTableName());
             ResultSet result1 = statement.executeQuery(query2);
 
+
             while (result1.next()) {
                 User user = new User();
                 user.setId(result1.getLong("id"));
@@ -98,12 +103,16 @@ public class Main {
                 user.setLastName(result1.getString("lastName"));
                 user.setAge(result1.getByte("age"));
 
-                System.out.println(user);
+                userList.add(user);
+
+//                System.out.println(user);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        System.out.println(userList.toString());
 
     }
 
