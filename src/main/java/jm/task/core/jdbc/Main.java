@@ -13,22 +13,23 @@ public class Main {
     private static String tableName;
     private static Long idToDo = 12L;
 
-    private static final String INSERT_NEW = "INSERT INTO " + tableName + "(name, lastName, age) VALUES(?,?,?)";
+    private static final String INSERT_NEW = "INSERT INTO $tableName (name, lastName, age) VALUES(?,?,?)";
 
-    private static final String GET_ALL = "SELECT * FROM " + tableName;
-    private static final String GET_BY_ID = "SELECT * FROM " + tableName + " WHERE id=9";
+//    private static final String GET_ALL = "SELECT * FROM " + tableName;
+    private static final String GET_ALL = "SELECT * FROM $tableName";
+    private static final String GET_BY_ID = "SELECT * FROM $tableName WHERE id=?";
 
-    private static final String UPDATE_BY_ID = "UPDATE " + tableName + " SET name='John', lastName='Connor', age=18 WHERE id=" + idToDo;
+    private static final String UPDATE_BY_ID = "UPDATE $tableName SET name='John', lastName='Connor', age=18 WHERE id=?";
 
-    private static final String DELETE_ALL = "DELETE from " + tableName;
-    private static final String DELETE_BY_ID = "DELETE from " + tableName + " WHERE id=" + idToDo;
+    private static final String DELETE_ALL = "DELETE from $tableName";
+    private static final String DELETE_BY_ID = "DELETE from $tableName WHERE id=?";
 
 
 //    private static final String DROP = "DROP TABLE ?";
     private static final String DROP = "DROP TABLE $tableName";
 //    private static final String DROP = "DROP TABLE " + tableName;
 
-    private static final String CREATE = "CREATE TABLE " + tableName + " (" +
+    private static final String CREATE = "CREATE TABLE $tableName (" +
                                         "`id` bigint NOT NULL AUTO_INCREMENT," +
                                         "`name` varchar(45) NOT NULL," +
                                         "`lastName` varchar(45) NOT NULL," +
@@ -40,8 +41,8 @@ public class Main {
     public static void main(String[] args) {
         // реализуйте алгоритм здесь
         Util con1 = new Util();
-        con1.setTableName("users33");
-        tableName = con1.getTableName();
+        con1.setTableName("users44");
+//        tableName = con1.getTableName();
 
 //        String tableName = con1.getTableName();
 
@@ -66,10 +67,12 @@ public class Main {
 //            preparedStatement.setByte(3, (byte) 65);
 
 
-            String query = DROP.replace("$tableName", con1.getTableName());
+            String query1 = CREATE.replace("$tableName", con1.getTableName());
+//            String query1 = DROP.replace("$tableName", con1.getTableName());
+//            String query = GET_ALL.replace("$tableName", con1.getTableName());
 //            stmt =conn.prepareStatement(query);
 
-            PreparedStatement preparedStatement = con1.getConnection().prepareStatement(query);
+            PreparedStatement preparedStatement = con1.getConnection().prepareStatement(query1);
 //            preparedStatement.setString(1, con1.getTableName());
 
 //            PreparedStatement preparedStatement = con1.getConnection().prepareStatement("DROP TABLE users22");
@@ -84,11 +87,9 @@ public class Main {
 //            ResultSet result1 = preparedStatement.executeQuery(GET_ALL);
 //            ResultSet result1 = statement.executeQuery("SELECT * FROM users WHERE id=9");
 //            ResultSet result1 = statement.executeQuery("SELECT * FROM users");
-            ResultSet result1 = statement.executeQuery(GET_ALL);
 
-
-
-
+            String query2 = GET_ALL.replace("$tableName", con1.getTableName());
+            ResultSet result1 = statement.executeQuery(query2);
 
             while (result1.next()) {
                 User user = new User();
@@ -98,9 +99,6 @@ public class Main {
                 user.setAge(result1.getByte("age"));
 
                 System.out.println(user);
-
-//                long id = result1.getLong("id");
-//                System.out.println(id);
             }
 
         } catch (SQLException e) {
